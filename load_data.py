@@ -1,5 +1,6 @@
 from lxml import etree
 import urllib.request
+import mlflow
 
 # Returns a list of Finnish words
 def load_finnish():
@@ -19,7 +20,22 @@ def load_finnish():
     s_elements = tree.xpath('/kotus-sanalista/st/s')
     return list(map(lambda s: s.text, s_elements))
 
+
 def load_english():
     with open("data/words", encoding="utf-8") as data:
         lines=map(lambda s: s.rstrip(), data.readlines())
     return list(lines)
+
+
+def main():
+    with mlflow.start_run():
+        finnish = load_finnish()
+        english = load_english()
+
+        print('Uploading word lists')
+        mlflow.log_artifact(finnish, "finnish-list-raw")
+        mlflow.log_artifact(english, "english-list-raw")
+
+
+if __name__ == "__main__":
+    main()
