@@ -1,4 +1,5 @@
 import mlflow
+from mlflow.projects import docker
 
 def run_step(entrypoint, parameters=None):
     print("Launching new run for entrypoint=%s and parameters=%s" % (entrypoint, parameters))
@@ -13,9 +14,9 @@ def workflow():
     # are documented by each step's .py file.
     with mlflow.start_run():
         #add pipeline run here...
-        run_step('load_raw_data')
-        run_step('preprocess_data')
-        run_step('train_classifier')
+        run_step('load_raw_data', parameters={"no-docker": True})
+        run_step('preprocess_data', parameters={"no-docker": True})
+        run_step('train_classifier', parameters={"no-docker": True})
         print('Workflow finished.')
         
 
