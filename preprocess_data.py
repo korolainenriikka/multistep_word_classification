@@ -1,8 +1,16 @@
 from collections import Counter
 import numpy as np
 import mlflow
+import os
+import sys
 
 alphabet="abcdefghijklmnopqrstuvwxyzäö-"
+
+
+def download_data(location, filename):
+    with open(os.path.join(location, filename)) as data:
+        return data.read()
+
 
 def get_features(a):
     counts = np.zeros((a.shape[0], 29))
@@ -23,8 +31,14 @@ def contains_valid_chars(s):
     return True
 
 
-def get_features_and_labels(finnish, english):
+def get_features_and_labels():
     with mlflow.start_run():
+        print('Uploading data from artifacts')
+
+        data_location = sys.argv[2]
+        finnish = download_data(data_location, 'finnish-list-raw/finnish_raw.txt')
+        english = download_data(data_location, 'english-list-raw/english_raw.txt')
+
         print('Filtering & transforming data')
         lowercase_finnish = [word.lower() for word in finnish]
         filtered_finnish = list(filter(lambda word: contains_valid_chars(word), lowercase_finnish))
@@ -42,8 +56,11 @@ def get_features_and_labels(finnish, english):
         features = np.concatenate((feature_finnish, feature_english)) 
         target = np.concatenate((target_finnish, target_english))
 
-        mlflow.log_artifacts(features)
-        mlflow.log_artifacts(target)
+        np.savetxt('features.txt', features)
+        np.savetxt('target.txt', target)
+
+        mlflow.log_artifact('features.txt')
+        mlflow.log_artifact('target.txt')
 
 
 if __name__ == "__main__":

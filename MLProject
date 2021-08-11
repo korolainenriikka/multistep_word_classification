@@ -1,18 +1,20 @@
 name: multistep_example
 
-docker_env:
-    image: word_classifier
-    volumes: ["/var/run/docker.sock:/var/run/docker.sock"]
+conda_env: conda.yaml
 
 entry_points:
   load_raw_data:
     command: "python load_data.py"
 
   preprocess_data:
-    command: "python preprocess_data.py"
+    parameters:
+      data_location: path
+    command: "python preprocess_data.py --data_location {data_location}"
 
   train_classifier:
-    command: "python train_keras.py --ratings-data {ratings_data} --als-model-uri {als_model_uri} --hidden-units {hidden_units}"
+    parameters:
+      data_location: path
+    command: "python classify.py --data_location {data_location}"
 
   main:
     command: "python main.py"
