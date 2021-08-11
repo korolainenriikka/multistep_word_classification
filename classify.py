@@ -22,7 +22,7 @@ def word_classification():
     accuracy_scores = cross_val_score(model, features, target, cv=crossval)
     for i, accuracy in enumerate(accuracy_scores):
         mlflow.log_metric('accuracy' + str(i), accuracy)
-    mlflow.sklearn.log_model(model)
+    mlflow.sklearn.log_model(model, 'model')
 
 
 if __name__ == "__main__":

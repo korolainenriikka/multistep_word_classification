@@ -1,5 +1,5 @@
 import mlflow
-from mlflow.projects import docker
+import os
 
 def run_step(entrypoint, parameters=None):
     print("----------\nLAUNCHING STEP: entrypoint=%s and parameters=%s" % (entrypoint, parameters))
@@ -19,6 +19,16 @@ def workflow():
         
         run_step('train_classifier', parameters={'data_location': processed_data_location})
         print('Workflow finished.')
+        
+        print('Clearing temporary files from memory...')
+        # here: delete features and target txt's from local and artifacts
+        # I currently have the tmp files duplicated? should fix...
+        os.remove('features.txt')
+        os.remove('target.txt')
+        # BUG: python does not find the files in artifacts even though they exist
+        #os.remove(processed_data_location + '/features.txt')
+        #os.remove(processed_data_location + '/target.txt')
+        print('Clearing finished.')
         
 
 if __name__ == "__main__":
