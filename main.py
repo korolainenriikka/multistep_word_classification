@@ -11,6 +11,8 @@ def workflow():
     # Note: The entrypoint names are defined in MLproject. The artifact directories
     # are documented by each step's .py file.
     with mlflow.start_run():
+        mlflow.set_tag('step-name', 'pipeline run')
+
         submitted_load_data = run_step('load_raw_data')
         artifact_location = submitted_load_data.info.artifact_uri
 

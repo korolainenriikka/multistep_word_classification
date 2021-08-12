@@ -29,6 +29,8 @@ def load_english():
 
 def main():
     with mlflow.start_run():
+        mlflow.set_tag('step-name', 'load data')
+
         finnish = load_finnish()
         english = load_english()
 

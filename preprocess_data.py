@@ -3,6 +3,7 @@ import numpy as np
 import mlflow
 import os
 import sys
+import click
 
 alphabet="abcdefghijklmnopqrstuvwxyzäö-"
 
@@ -31,11 +32,14 @@ def contains_valid_chars(s):
     return True
 
 
-def get_features_and_labels():
+
+@click.command()
+@click.option("--data_location")
+def get_features_and_labels(data_location):
     with mlflow.start_run():
+        mlflow.set_tag('step-name', 'preprocess data')
         print('Uploading data from artifacts')
 
-        data_location = sys.argv[2]
         finnish = download_data(data_location, 'finnish-list-raw/finnish_raw.txt')
         english = download_data(data_location, 'english-list-raw/english_raw.txt')
 
