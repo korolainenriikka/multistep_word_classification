@@ -7,10 +7,14 @@ entry_points:
     command: "python load_data.py"
 
   preprocess_data:
-    command: "python preprocess_data.py"
+    parameters:
+      data_location: path
+    command: "python preprocess_data.py --data_location {data_location}"
 
   train_classifier:
-    command: "python classify.py"
+    parameters:
+      data_location: path
+    command: "python classify.py --data_location {data_location}"
 
   main:
     command: "python main.py"

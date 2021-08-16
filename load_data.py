@@ -29,12 +29,22 @@ def load_english():
 
 def main():
     with mlflow.start_run():
+        mlflow.set_tag('step-name', 'load data')
+
         finnish = load_finnish()
         english = load_english()
 
+        with open('finnish_raw.txt', 'w') as file:
+            for line in finnish:
+                file.write(line + '\n')
+
+        with open('english_raw.txt', 'w') as file:
+            for line in english:
+                file.write(line + '\n')
+
         print('Uploading word lists')
-        mlflow.log_artifact(finnish, "finnish-list-raw")
-        mlflow.log_artifact(english, "english-list-raw")
+        mlflow.log_artifact('finnish_raw.txt', "finnish-list-raw")
+        mlflow.log_artifact('english_raw.txt', "english-list-raw")
 
 
 if __name__ == "__main__":
