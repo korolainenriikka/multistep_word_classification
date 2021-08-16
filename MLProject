@@ -9,10 +9,15 @@ entry_points:
     command: "python load_data.py"
 
   preprocess_data:
-    command: "python preprocess_data.py"
+    parameters:
+      data_location: path
+    command: "python preprocess_data.py --data_location {data_location}"
 
   train_classifier:
-    command: "python train_keras.py --ratings-data {ratings_data} --als-model-uri {als_model_uri} --hidden-units {hidden_units}"
+    parameters:
+      data_location: path
+    command: "python classify.py --data_location {data_location}"
 
   main:
     command: "python main.py"
+

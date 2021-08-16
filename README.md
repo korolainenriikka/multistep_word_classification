@@ -16,3 +16,8 @@ notes on the versions:
     * the volume in MLProject binds word_classifier containers' docker socket to the outer machines' docker socket. Like this the step containers should not be nested but siblings to the workflow container
     * current error in run command despite this: run not found.
 
+## Run the project
+
+* Build the docker image with `docker build -t word_classifier .`
+* Run the workflow with `mlflow run .`
+
