@@ -1,8 +1,6 @@
 name: multistep_example
 
-docker_env:
-    image: word_classifier
-    volumes: ["/var/run/docker.sock:/var/run/docker.sock"]
+conda_env: conda.yaml
 
 entry_points:
   load_raw_data:
